@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#073f32">
+  <title>Surah Al-Mulk | Recitation Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" data-view="home">
+        <span class="brand-mark">۞</span>
+        <span><strong>Al-Mulk</strong><small>RECITATION ASSESSMENT</small></span>
+      </a>
+      <nav id="main-nav" class="main-nav">
+        <button class="nav-link active" data-view="home">Home</button>
+        <button class="nav-link" data-view="dashboard" id="dashboard-nav" hidden>Dashboard</button>
+        <button class="nav-link" data-view="history" id="history-nav" hidden>My history</button>
+      </nav>
+      <div class="header-actions" id="header-actions">
+        <button class="btn btn-ghost" data-view="login">Log in</button>
+        <button class="btn btn-gold btn-small" data-view="register">Create account</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="view active" id="view-home">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow"><span class="eyebrow-dot"></span> YOUR QUR'AN MEMORIZATION JOURNEY</span>
+            <h1>Strengthen your<br><em>Surah Al-Mulk</em><br>recitation.</h1>
+            <p class="hero-description">Test your memorization, record your recitation, and keep track of your progress through Surah Al-Mulk.</p>
+            <div class="hero-actions">
+              <button class="btn btn-gold" data-view="register">Get started <span>→</span></button>
+              <button class="btn btn-outline-light" data-view="login">I already have an account</button>
+            </div>
+            <div class="hero-note"><span class="small-star">✦</span> A focused space for revision and self-assessment</div>
+          </div>
+          <div class="hero-art" aria-label="Decorative Islamic geometric artwork">
+            <div class="art-ring ring-one"></div><div class="art-ring ring-two"></div>
+            <div class="art-center"><span class="art-star">۞</span><span class="art-arabic">الملك</span><span class="art-caption">SURAH 67 · 30 VERSES</span></div>
+            <span class="art-spark spark-one">✧</span><span class="art-spark spark-two">✦</span>
+          </div>
+        </div>
+
+        <section class="intro-section">
+          <div class="section-heading">
+            <span class="eyebrow dark-eyebrow">HOW IT WORKS</span>
+            <h2>Your recitation test, <em>step by step.</em></h2>
+            <p>Each assessment gives you a short section to recite from memory.</p>
+          </div>
+          <div class="steps-grid">
+            <article class="step-card"><span class="step-number">01</span><div class="step-icon">◉</div><h3>Receive a prompt</h3><p>Get one randomly selected section: verses 1–10, 11–20, or 21–30.</p></article>
+            <article class="step-card"><span class="step-number">02</span><div class="step-icon">♫</div><h3>Listen and recite</h3><p>Listen to the opening verse, then recite the remaining verses aloud.</p></article>
+            <article class="step-card"><span class="step-number">03</span><div class="step-icon">▤</div><h3>Review your attempt</h3><p>Submit your recording, review your attempt, and listen to the full reference passage.</p></article>
+          </div>
+        </section>
+        <section class="quote-band"><span>۞</span><p>“Blessed is He in whose hand is dominion, and He is over all things competent.”</p><small>Surah Al-Mulk · 67:1 · English meaning</small></section>
+      </section>
+
+      <section class="view narrow-view" id="view-register">
+        <div class="form-card">
+          <div class="form-emblem">۞</div>
+          <span class="eyebrow dark-eyebrow">BEGIN YOUR JOURNEY</span>
+          <h2>Create your account</h2>
+          <p class="muted">Register to save and review your recitation attempts on this device.</p>
+          <form id="register-form">
+            <label for="register-name">Full name</label><input id="register-name" name="name" autocomplete="name" required placeholder="Enter your full name">
+            <label for="register-email">Email address</label><input id="register-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+            <label for="register-password">Password</label><input id="register-password" name="password" type="password" minlength="6" autocomplete="new-password" required placeholder="At least 6 characters">
+            <button class="btn btn-primary full-width" type="submit">Create account <span>→</span></button>
+          </form>
+          <p class="form-switch">Already registered? <button class="text-button" data-view="login">Log in</button></p>
+          <p class="demo-warning">Demo account only: your profile is stored in this browser and is not synced to a server. Do not use a real or reused password.</p>
+        </div>
+      </section>
+
+      <section class="view narrow-view" id="view-login">
+        <div class="form-card">
+          <div class="form-emblem">۞</div>
+          <span class="eyebrow dark-eyebrow">WELCOME BACK</span>
+          <h2>Log in</h2>
+          <p class="muted">Continue your Surah Al-Mulk revision journey.</p>
+          <form id="login-form">
+            <label for="login-email">Email address</label><input id="login-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+            <label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Your password">
+            <button class="btn btn-primary full-width" type="submit">Log in <span>→</span></button>
+          </form>
+          <p class="form-switch">New here? <button class="text-button" data-view="register">Create an account</button></p>
+          <p class="demo-warning">Demo login only: this is not secure production authentication. Your test history stays on this device.</p>
+        </div>
+      </section>
+
+      <section class="view page-view" id="view-dashboard">
+        <div class="page-heading"><div><span class="eyebrow dark-eyebrow">YOUR PERSONAL SPACE</span><h2>Assalamu alaikum, <em id="student-name">Student</em></h2><p class="muted">Ready to revise and test your memorization?</p></div><div class="avatar" id="student-avatar">S</div></div>
+        <div class="dashboard-grid">
+          <div class="main-column">
+            <article class="start-card">
+              <div class="start-card-pattern">۞</div><span class="eyebrow light-eyebrow">READY WHEN YOU ARE</span>
+              <h3>Your next recitation<br>assessment awaits.</h3>
+              <p>A section of ten verses will be selected at random.</p>
+              <button class="btn btn-gold" id="start-test">Start test <span>→</span></button>
+            </article>
+            <div class="stats-grid">
+              <article class="stat-card"><span class="stat-label">TESTS COMPLETED</span><strong id="stat-tests">0</strong><small>Saved attempts</small></article>
+              <article class="stat-card"><span class="stat-label">LAST ATTEMPT</span><strong id="stat-last">—</strong><small>Most recent test</small></article>
+            </div>
+          </div>
+          <aside class="side-card"><span class="eyebrow dark-eyebrow">TEST STRUCTURE</span><h3>Three possible sections</h3><div class="section-row"><span>01</span><div><strong>Verses 1–10</strong><small>Opening section</small></div></div><div class="section-row"><span>02</span><div><strong>Verses 11–20</strong><small>Middle section</small></div></div><div class="section-row"><span>03</span><div><strong>Verses 21–30</strong><small>Final section</small></div></div><p class="side-note">The app selects one section randomly for each new test.</p></aside>
+        </div>
+        <div class="recent-heading"><h3>Recent activity</h3><button class="text-button" data-view="history">View all history →</button></div>
+        <div id="dashboard-recent" class="history-list"><div class="empty-state">Your completed tests will appear here.</div></div>
+      </section>
+
+      <section class="view page-view" id="view-test">
+        <div class="test-topline"><button class="back-button" data-view="dashboard">← Dashboard</button><span class="test-chip">RECITATION TEST</span></div>
+        <div class="test-heading"><span class="eyebrow dark-eyebrow">SURAH AL-MULK · SURAH 67</span><h2>Your selected section</h2><div class="range-pill" id="test-range">Verses —</div><p class="muted">Listen to the opening verse, then recite the remaining nine verses from memory. Internet access is needed to load the Qur’an text and reference audio.</p></div>
+        <div class="test-panel">
+          <div class="prompt-panel"><span class="eyebrow light-eyebrow">YOUR STARTING VERSE</span><div class="arabic-placeholder" id="opening-verse" lang="ar" dir="rtl">سيتم تحميل نص الآية هنا</div><p class="verse-number" id="opening-verse-number">Surah 67 · Verse —</p><p class="prompt-note" id="test-source-status">The opening verse will load when your test begins. Internet access is required.</p><button class="btn btn-gold" id="play-opening" disabled>▶ Play opening verse</button><audio id="reference-audio" preload="none"></audio></div>
+          <div class="record-panel"><div class="record-icon" id="record-icon">🎙</div><h3>Record your recitation</h3><p class="muted">Allow microphone access when your browser asks. Recite the remaining verses clearly.</p><div class="record-timer" id="record-timer">00:00</div><div class="record-status" id="record-status">Not recording</div><div class="record-controls"><button class="btn btn-primary" id="record-button">Start recording</button><button class="btn btn-outline" id="stop-button" disabled>Stop</button></div><audio id="recording-playback" controls hidden></audio><p class="record-hint">Keep this page open while recording. You can listen to your recording before submitting.</p></div>
+        </div>
+        <div class="submit-row"><p id="recording-note">Record and stop your attempt before submitting.</p><button class="btn btn-gold" id="submit-test" disabled>Submit test <span>→</span></button></div>
+      </section>
+
+      <section class="view page-view" id="view-result">
+        <div class="result-header"><div class="result-check">✓</div><span class="eyebrow dark-eyebrow">ATTEMPT SAVED</span><h2>Your recording has been submitted.</h2><p class="muted">Your attempt is saved in this prototype. An accurate recitation and Tajweed grading service has not yet been connected.</p></div>
+        <div class="result-card"><div><span class="eyebrow dark-eyebrow">TEST SECTION</span><h3 id="result-range">Verses —</h3><p id="result-date" class="muted"></p><p class="muted">Recording duration: <strong id="result-duration">—</strong></p></div><div class="pending-score"><strong>Review needed</strong><span>No automatic score has been generated</span></div></div>
+        <div class="review-card"><span class="eyebrow dark-eyebrow">REVIEW & REVISE</span><h3>Listen to the complete reference recitation</h3><p class="muted">Mishary Rashid Alafasy · The ten verses play in order, one after another.</p><div class="reference-controls"><button class="btn btn-primary" id="play-full-section">▶ Play all 10 verses</button><button class="btn btn-outline" id="stop-full-section">Pause</button><span id="reference-track-label" class="track-label">Ready to play</span></div><div id="review-verses" class="review-verses"></div><div class="download-row"><button class="text-button" id="download-recording">↓ Download my recording</button><small>Your recording is available to download during this page session.</small></div></div>
+        <div class="result-actions"><button class="btn btn-primary" data-view="history">View test history</button><button class="btn btn-outline" data-view="dashboard">Back to dashboard</button></div>
+      </section>
+
+      <section class="view page-view" id="view-history">
+        <div class="page-heading"><div><span class="eyebrow dark-eyebrow">YOUR PROGRESS</span><h2>Test history</h2><p class="muted">Review your previous recitation attempts.</p></div><button class="btn btn-primary" data-view="dashboard">Dashboard</button></div>
+        <div id="full-history" class="history-list"><div class="empty-state">No tests submitted yet. Your attempts will be saved here.</div></div>
+      </section>
+    </main>
+    <footer class="footer"><span class="footer-mark">۞</span><p>Made for Qur'an revision and reflection.</p><small>Surah Al-Mulk · 67 · 30 verses</small></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
