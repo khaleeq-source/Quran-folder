@@ -130,7 +130,17 @@
       <section class="view page-view" id="view-result">
         <div class="result-header"><div class="result-check">✓</div><span class="eyebrow dark-eyebrow">ATTEMPT SAVED</span><h2>Your recording has been submitted.</h2><p class="muted">Your attempt is saved in this prototype. An accurate recitation and Tajweed grading service has not yet been connected.</p></div>
         <div class="result-card"><div><span class="eyebrow dark-eyebrow">TEST SECTION</span><h3 id="result-range">Verses —</h3><p id="result-date" class="muted"></p><p class="muted">Recording duration: <strong id="result-duration">—</strong></p></div><div class="pending-score"><strong>Review needed</strong><span>No automatic score has been generated</span></div></div>
-        <div class="review-card"><span class="eyebrow dark-eyebrow">REVIEW & REVISE</span><h3>Listen to the complete reference recitation</h3><p class="muted">Mishary Rashid Alafasy · The ten verses play in order, one after another.</p><div class="reference-controls"><button class="btn btn-primary" id="play-full-section">▶ Play all 10 verses</button><button class="btn btn-outline" id="stop-full-section">Pause</button><span id="reference-track-label" class="track-label">Ready to play</span></div><div id="review-verses" class="review-verses"></div><div class="download-row"><button class="text-button" id="download-recording">↓ Download my recording</button><small>Your recording is available to download during this page session.</small></div></div>
+        <div class="review-card"><span class="eyebrow dark-eyebrow">REVIEW & REVISE</span><h3>Listen to the complete reference recitation</h3><p class="muted">Mishary Rashid Alafasy · The ten verses play in order, one after another.</p><div class="reference-controls"><button class="btn btn-primary" id="play-full-section">▶ Play all 10 verses</button><button class="btn btn-outline" id="stop-full-section">Pause</button><span id="reference-track-label" class="track-label">Ready to play</span></div><div id="review-verses" class="review-verses"></div>
+          <section id="grading-panel" class="grading-panel">
+            <div id="grading-summary" class="grading-summary">
+              <div>
+                <strong id="live-score-text">Score: 0 / 100 (0%)</strong>
+                <span id="live-grade-badge" class="history-status">Ungraded</span>
+              </div>
+              <button type="button" class="btn btn-gold btn-small" id="save-grade-button" disabled>Save Score</button>
+            </div>
+          </section>
+          <div class="download-row"><button class="text-button" id="download-recording">↓ Download my recording</button><small>Your recording is available to download during this page session.</small></div></div>
         <div class="result-actions"><button class="btn btn-primary" data-view="history">View test history</button><button class="btn btn-outline" data-view="dashboard">Back to dashboard</button></div>
       </section>
 

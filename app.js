@@ -22,6 +22,7 @@ let timerInterval = null;
 let elapsedSeconds = 0;
 let referenceAudioQueue = [];
 let referenceAudioIndex = 0;
+let verseRatings = Array(10).fill(null);
 
 const sections = [
   { start: 1, end: 10, label: "Verses 1–10" },
@@ -123,6 +124,12 @@ function renderDashboard() {
   $("student-avatar").textContent = currentUser.name.trim().charAt(0).toUpperCase();
   $("stat-tests").textContent = tests.length;
   $("stat-last").textContent = tests.length ? new Date(tests[0].createdAt).toLocaleDateString() : "—";
+  const gradedTests = tests.filter(test => Number.isFinite(Number(test.percentage)));
+  const average = gradedTests.length
+    ? Math.round(gradedTests.reduce((sum, test) => sum + Number(test.percentage), 0) / gradedTests.length)
+    : null;
+  const averageElement = $("stat-avg");
+  if (averageElement) averageElement.textContent = average === null ? "—" : `${average}%`;
   renderTestList($("dashboard-recent"), tests.slice(0, 3));
 }
 function openAudioDatabase() {
@@ -271,7 +278,9 @@ $("submit-test").addEventListener("click", async () => {
   const attempt = {
     id: crypto.randomUUID?.() || String(Date.now()), email: currentUser.email,
     section: selectedSection.label, startVerse: selectedSection.start, endVerse: selectedSection.end,
-    duration: elapsedSeconds, createdAt: Date.now(), status: "Submitted · awaiting qualified review"
+    duration: elapsedSeconds, createdAt: Date.now(),
+    score: null, maxScore: 100, percentage: null, grade: null, ratings: [],
+    status: "Submitted · pending self-grade"
   };
   const tests = readStore(STORAGE_TESTS, []); tests.push(attempt); writeStore(STORAGE_TESTS, tests);
   try { await saveAttemptRecording(attempt.id, recordingBlob); }
@@ -284,13 +293,120 @@ $("submit-test").addEventListener("click", async () => {
   setView("result");
 });
 
+const VERSE_POINTS = Object.freeze({
+  accurate: 10,
+  minor: 5,
+  missed: 0
+});
+
+function computeScoreFromRatings(ratings) {
+  const score = ratings.reduce((total, rating) => total + (rating ? VERSE_POINTS[rating] : 0), 0);
+  const maxScore = ratings.length * 10;
+  const percentage = maxScore ? Math.round((score / maxScore) * 100) : 0;
+  let grade = "Needs practice";
+  if (percentage >= 90) grade = "Excellent";
+  else if (percentage >= 70) grade = "Good";
+  else if (percentage >= 50) grade = "Fair";
+  return { score, maxScore, percentage, grade };
+}
+
+function updateGradingSummaryUI() {
+  const completed = verseRatings.filter(rating => rating !== null).length;
+  const result = computeScoreFromRatings(verseRatings);
+  const scoreText = $("live-score-text");
+  const gradeBadge = $("live-grade-badge");
+  const saveButton = $("save-grade-button");
+  if (scoreText) scoreText.textContent = `Score: ${result.score} / ${result.maxScore} (${result.percentage}%)`;
+  if (gradeBadge) gradeBadge.textContent = completed === 10 ? result.grade : `${completed}/10 graded`;
+  if (saveButton) saveButton.disabled = completed !== 10;
+}
+
 function renderReviewVerses() {
+  verseRatings = Array(10).fill(null);
   $("review-verses").innerHTML = sectionVerses.map((verse, index) => `
-    <div class="review-verse"><span>${selectedSection.start + index}</span><p lang="ar" dir="rtl">${escapeHtml(verse.text_uthmani)}</p></div>`).join("");
+    <div class="review-verse" data-verse-index="${index}">
+      <span>${selectedSection.start + index}</span>
+      <p lang="ar" dir="rtl">${escapeHtml(verse.text_uthmani)}</p>
+      <div class="verse-grade-actions" role="group" aria-label="Grade verse ${selectedSection.start + index}">
+        <button type="button" class="btn btn-small" data-grade-index="${index}" data-rating="accurate" aria-pressed="false">Accurate · 10</button>
+        <button type="button" class="btn btn-small" data-grade-index="${index}" data-rating="minor" aria-pressed="false">Minor mistake · 5</button>
+        <button type="button" class="btn btn-small" data-grade-index="${index}" data-rating="missed" aria-pressed="false">Missed · 0</button>
+        <button type="button" class="text-button" data-play-verse="${index}">Play verse</button>
+      </div>
+    </div>`).join("");
+
+  let summary = $("grading-summary");
+  if (!summary) {
+    summary = document.createElement("div");
+    summary.id = "grading-summary";
+    summary.className = "grading-summary";
+    summary.innerHTML = `
+      <div>
+        <strong id="live-score-text">Score: 0 / 100 (0%)</strong>
+        <span id="live-grade-badge" class="history-status">0/10 graded</span>
+      </div>
+      <button type="button" class="btn btn-gold btn-small" id="save-grade-button" disabled>Save Grade</button>`;
+    $("review-verses").insertAdjacentElement("afterend", summary);
+  }
+  updateGradingSummaryUI();
+
   referenceAudioQueue = Array.from({ length: 10 }, (_, index) => selectedSection.start + index);
   referenceAudioIndex = 0;
   $("reference-track-label").textContent = `Ready · Verses ${selectedSection.start}–${selectedSection.end}`;
 }
+
+// Event delegation supports the verse cards generated above.
+$("review-verses").addEventListener("click", event => {
+  const gradeButton = event.target.closest("[data-grade-index]");
+  if (gradeButton) {
+    const index = Number(gradeButton.dataset.gradeIndex);
+    const rating = gradeButton.dataset.rating;
+    if (!Number.isInteger(index) || index < 0 || index >= 10 || !Object.hasOwn(VERSE_POINTS, rating)) return;
+    verseRatings[index] = rating;
+    const card = gradeButton.closest(".review-verse");
+    card.querySelectorAll("[data-grade-index]").forEach(button => {
+      const active = button === gradeButton;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    updateGradingSummaryUI();
+    return;
+  }
+
+  const playButton = event.target.closest("[data-play-verse]");
+  if (playButton) playReferenceTrack(Number(playButton.dataset.playVerse));
+});
+
+document.addEventListener("click", event => {
+  const saveButton = event.target.closest("#save-grade-button");
+  if (!saveButton) return;
+  if (!currentAttempt || verseRatings.length !== 10 || verseRatings.some(rating => rating === null)) {
+    showToast("Please grade all 10 verses before saving.");
+    return;
+  }
+
+  const result = computeScoreFromRatings(verseRatings);
+  const tests = readStore(STORAGE_TESTS, []);
+  const attemptIndex = tests.findIndex(test => test.id === currentAttempt.id);
+  if (attemptIndex < 0) {
+    showToast("Could not find this test attempt. Please refresh and try again.");
+    return;
+  }
+
+  tests[attemptIndex] = {
+    ...tests[attemptIndex],
+    ...result,
+    ratings: [...verseRatings],
+    status: "Graded"
+  };
+  writeStore(STORAGE_TESTS, tests);
+  currentAttempt = tests[attemptIndex];
+  saveButton.disabled = true;
+  saveButton.textContent = "Grade Saved";
+  showToast(`Grade saved: ${result.score}/100 · ${result.grade}`);
+  renderDashboard();
+  renderHistory();
+});
 function stopReferenceAudio() {
   const audio = $("reference-audio");
   if (audio) { audio.pause(); audio.removeAttribute("src"); audio.load(); }
@@ -305,6 +421,7 @@ function playReferenceTrack(index = 0) {
   $("reference-track-label").textContent = `Playing verse ${verse} of 30 · ${referenceAudioIndex + 1}/10`;
   audio.play().catch(() => showToast("Reference audio could not play. Check your internet connection."));
 }
+
 $("play-full-section").addEventListener("click", () => playReferenceTrack(0));
 $("stop-full-section").addEventListener("click", () => {
   $("reference-audio").pause(); $("reference-track-label").textContent = "Playback paused";
